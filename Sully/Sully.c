@@ -115,12 +115,14 @@ char*src[]={
 "	return (compile_command);",
 "}",
 "",
-"int	main(void)",
+"int	main(int argc, char **argv, char **env)",
 "{",
 "	char	*file_name;",
 "	char	*compile_command;",
-"	char	*argv[2] = {NULL, NULL};",
+"	char	*next_argv[2] = {NULL, NULL};",
 "",
+"	(void)argc;",
+"	(void)argv;",
 "	if (strcmp(__FILE__, src[START_NAME]))",
 "		--i;",
 "	if (i < 0)",
@@ -142,7 +144,7 @@ char*src[]={
 "	file_name[0] = '.';",
 "	file_name[1] = '/';",
 "	argv[0] = file_name;",
-"	if (execve(file_name, argv, NULL) == -1)",
+"	if (execve(file_name, next_argv, env) == -1)",
 "	{",
 "		dprintf(2, src[ERROR_FAILED_TO_RUN_CHILD_FILE], file_name, 10);",
 "		free(file_name);",
@@ -265,12 +267,14 @@ char	*build_compile_command(char *file_name)
 	return (compile_command);
 }
 
-int	main(void)
+int	main(int argc, char **argv, char **env)
 {
 	char	*file_name;
 	char	*compile_command;
-	char	*argv[2] = {NULL, NULL};
+	char	*next_argv[2] = {NULL, NULL};
 
+	(void)argc;
+	(void)argv;
 	if (strcmp(__FILE__, src[START_NAME]))
 		--i;
 	if (i < 0)
@@ -292,7 +296,7 @@ int	main(void)
 	file_name[0] = '.';
 	file_name[1] = '/';
 	argv[0] = file_name;
-	if (execve(file_name, argv, NULL) == -1)
+	if (execve(file_name, next_argv, env) == -1)
 	{
 		dprintf(2, src[ERROR_FAILED_TO_RUN_CHILD_FILE], file_name, 10);
 		free(file_name);
