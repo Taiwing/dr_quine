@@ -115,11 +115,28 @@ char*src[]={
 "	return (compile_command);",
 "}",
 "",
+"int	exec_file(char *file_name, char **env)",
+"{",
+"	char	*next_argv[2] = {NULL, NULL};",
+"",
+"	file_name[strlen(file_name) - 2] = 0;",
+"	memmove((void *)file_name + 2, (void *)file_name, strlen(file_name));",
+"	file_name[0] = '.';",
+"	file_name[1] = '/';",
+"	next_argv[0] = file_name;",
+"	if (execve(file_name, next_argv, env) == -1)",
+"	{",
+"		dprintf(2, src[ERROR_FAILED_TO_RUN_CHILD_FILE], file_name, 10);",
+"		free(file_name);",
+"		return (EXIT_FAILURE);",
+"	}",
+"	return (EXIT_SUCCESS);",
+"}",
+"",
 "int	main(int argc, char **argv, char **env)",
 "{",
 "	char	*file_name;",
 "	char	*compile_command;",
-"	char	*next_argv[2] = {NULL, NULL};",
 "",
 "	(void)argc;",
 "	(void)argv;",
@@ -139,17 +156,8 @@ char*src[]={
 "		return (EXIT_FAILURE);",
 "	}",
 "	free(compile_command);",
-"	file_name[strlen(file_name) - 2] = 0;",
-"	memmove((void *)file_name + 2, (void *)file_name, strlen(file_name));",
-"	file_name[0] = '.';",
-"	file_name[1] = '/';",
-"	argv[0] = file_name;",
-"	if (execve(file_name, next_argv, env) == -1)",
-"	{",
-"		dprintf(2, src[ERROR_FAILED_TO_RUN_CHILD_FILE], file_name, 10);",
-"		free(file_name);",
+"	if (i && exec_file(file_name, env))",
 "		return (EXIT_FAILURE);",
-"	}",
 "	free(file_name);",
 "	return (EXIT_SUCCESS);",
 "}",
@@ -267,11 +275,28 @@ char	*build_compile_command(char *file_name)
 	return (compile_command);
 }
 
+int	exec_file(char *file_name, char **env)
+{
+	char	*next_argv[2] = {NULL, NULL};
+
+	file_name[strlen(file_name) - 2] = 0;
+	memmove((void *)file_name + 2, (void *)file_name, strlen(file_name));
+	file_name[0] = '.';
+	file_name[1] = '/';
+	next_argv[0] = file_name;
+	if (execve(file_name, next_argv, env) == -1)
+	{
+		dprintf(2, src[ERROR_FAILED_TO_RUN_CHILD_FILE], file_name, 10);
+		free(file_name);
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	char	*file_name;
 	char	*compile_command;
-	char	*next_argv[2] = {NULL, NULL};
 
 	(void)argc;
 	(void)argv;
@@ -291,17 +316,8 @@ int	main(int argc, char **argv, char **env)
 		return (EXIT_FAILURE);
 	}
 	free(compile_command);
-	file_name[strlen(file_name) - 2] = 0;
-	memmove((void *)file_name + 2, (void *)file_name, strlen(file_name));
-	file_name[0] = '.';
-	file_name[1] = '/';
-	argv[0] = file_name;
-	if (execve(file_name, next_argv, env) == -1)
-	{
-		dprintf(2, src[ERROR_FAILED_TO_RUN_CHILD_FILE], file_name, 10);
-		free(file_name);
+	if (i && exec_file(file_name, env))
 		return (EXIT_FAILURE);
-	}
 	free(file_name);
 	return (EXIT_SUCCESS);
 }
