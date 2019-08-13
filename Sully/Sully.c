@@ -117,14 +117,8 @@ char*src[]={
 "",
 "int	exec_file(char *file_name, char **env)",
 "{",
-"	char	*next_argv[2] = {NULL, NULL};",
-"",
 "	file_name[strlen(file_name) - 2] = 0;",
-"	memmove((void *)file_name + 2, (void *)file_name, strlen(file_name));",
-"	file_name[0] = '.';",
-"	file_name[1] = '/';",
-"	next_argv[0] = file_name;",
-"	if (execve(file_name, next_argv, env) == -1)",
+"	if (execve(file_name, (char *[2]){file_name, NULL}, env) == -1)",
 "	{",
 "		dprintf(2, src[ERROR_FAILED_TO_RUN_CHILD_FILE], file_name, 10);",
 "		free(file_name);",
@@ -277,14 +271,8 @@ char	*build_compile_command(char *file_name)
 
 int	exec_file(char *file_name, char **env)
 {
-	char	*next_argv[2] = {NULL, NULL};
-
 	file_name[strlen(file_name) - 2] = 0;
-	memmove((void *)file_name + 2, (void *)file_name, strlen(file_name));
-	file_name[0] = '.';
-	file_name[1] = '/';
-	next_argv[0] = file_name;
-	if (execve(file_name, next_argv, env) == -1)
+	if (execve(file_name, (char *[2]){file_name, NULL}, env) == -1)
 	{
 		dprintf(2, src[ERROR_FAILED_TO_RUN_CHILD_FILE], file_name, 10);
 		free(file_name);
