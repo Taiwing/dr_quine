@@ -1,8 +1,21 @@
 #!/usr/bin/env bash
 
-gcc -Wall -Wextra -Werror -o Colleen Colleen.c
-./Colleen > tmp_Colleen
-if ! diff tmp_Colleen Colleen.c > /dev/null; then
+COLLEEN_SRC="$1"
+
+if [ -z "$COLLEEN_SRC" ]; then
+	COLLEEN_SRC="Colleen.c"
+fi
+
+COLLEEN_EXEC="${COLLEEN_SRC%.*}"
+OUT_FILE="tmp_$COLLEEN_EXEC"
+
+if ! gcc -Wall -Wextra -Werror -o "$COLLEEN_EXEC" "$COLLEEN_SRC"; then
+	exit 1
+fi
+
+./"$COLLEEN_EXEC" > "$OUT_FILE"
+
+if ! diff "$OUT_FILE" "$COLLEEN_SRC" > /dev/null; then
 	echo "KO"
 else
 	echo "OK"
