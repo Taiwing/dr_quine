@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+gcc -Wall -Wextra -Werror -o Colleen Colleen.c
+./Colleen > tmp_Colleen
+if ! diff tmp_Colleen Colleen.c > /dev/null; then
+	echo "KO"
+else
+	echo "OK"
+fi
+	
