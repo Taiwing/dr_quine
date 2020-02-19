@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+IFS=''
+TARGET_CODE="$1"
+SELF_REP_COPY="self_rep_copy.c"
+
+if [ -z "$1" ]; then
+	echo "error: no argument provided"
+	exit 1
+fi
+
+echo 'const char	*g_source_code[] = {' > "$SELF_REP_COPY"
+
+while read; do
+	echo '	"'$REPLY'\n",' >> "$SELF_REP_COPY"
+done < "$TARGET_CODE"
+
+echo '	0' >> "$SELF_REP_COPY"
+echo '};' >> "$SELF_REP_COPY"
+
+cat "$TARGET_CODE" >> "$SELF_REP_COPY"

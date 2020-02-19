@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+if [ -z "$1" ]; then
+	echo "error: no argument provided"
+	exit 1
+fi
+
+COLLEEN_SRC="$1"
+COLLEEN_EXEC=$(basename ${COLLEEN_SRC%.*})
+OUT_FILE="tmp_$COLLEEN_EXEC"
+
+if ! gcc -Wall -Wextra -Werror -o "$COLLEEN_EXEC" "$COLLEEN_SRC"; then
+	exit 1
+fi
+
+./"$COLLEEN_EXEC" > "$OUT_FILE"
+
+if ! diff "$OUT_FILE" "$COLLEEN_SRC" > /dev/null; then
+	echo "KO"
+else
+	echo "OK"
+fi
+	
