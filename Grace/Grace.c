@@ -8,7 +8,7 @@ char*src[]={
 "*/",
 "#include <stdio.h>",
 "#include <string.h>",
-"",
+"#define MAIN int main(){return pseudo_main();}",
 "",
 "void	fputendl(char *s, FILE *fp)",
 "{",
@@ -31,7 +31,7 @@ char*src[]={
 "		f(*ptr++, fp);",
 "}",
 "",
-"int main()",
+"int pseudo_main()",
 "{",
 "	FILE	*fp;",
 "",
@@ -43,6 +43,8 @@ char*src[]={
 "	fclose(fp);",
 "	return (0);",
 "}",
+"",
+"MAIN",
 0};
 /*
 strings: (lol)
@@ -51,7 +53,7 @@ w
 */
 #include <stdio.h>
 #include <string.h>
-
+#define MAIN int main(){return pseudo_main();}
 
 void	fputendl(char *s, FILE *fp)
 {
@@ -74,7 +76,7 @@ void print_src(char**ptr, void(*f)(), FILE *fp)
 		f(*ptr++, fp);
 }
 
-int main()
+int pseudo_main()
 {
 	FILE	*fp;
 
@@ -86,3 +88,5 @@ int main()
 	fclose(fp);
 	return (0);
 }
+
+MAIN
