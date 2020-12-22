@@ -1,10 +1,14 @@
-section .text
-	global _start
-
 ;mandatory single comment ;)
-%define useless_define_1 0
-%define useless_define_2 0
-%define useless_define_3 0
+%macro startProgram 0
+	global _start
+%endmacro
+%macro useless_macro_1 0
+%endmacro
+%macro useless_macro_2 0
+%endmacro
+
+section .text
+	startProgram
 
 _start:
 	mov rdi, FILE_NAME

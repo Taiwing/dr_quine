@@ -1,10 +1,14 @@
-section .text
-	global _start
-
 ;mandatory single comment ;)
-%define useless_define_1 0
-%define useless_define_2 0
-%define useless_define_3 0
+%macro startProgram 0
+	global _start
+%endmacro
+%macro useless_macro_1 0
+%endmacro
+%macro useless_macro_2 0
+%endmacro
+
+section .text
+	startProgram
 
 _start:
 	mov rdi, FILE_NAME
@@ -130,15 +134,19 @@ LINE_START db 'db ', 0x22, 0x0
 LINE_END db 0x22, ', 0x0', 0x0
 FILE_NAME db 'Grace_kid.s', 0x0
 OPEN_ERROR_STRING db 'error: could not open/create file', 0x0
-TXT_LINE_COUNT equ 0x86
+TXT_LINE_COUNT equ 0x8A
 txt:
-db "section .text", 0x0
-db "	global _start", 0x0
-db "", 0x0
 db ";mandatory single comment ;)", 0x0
-db "%define useless_define_1 0", 0x0
-db "%define useless_define_2 0", 0x0
-db "%define useless_define_3 0", 0x0
+db "%macro startProgram 0", 0x0
+db "	global _start", 0x0
+db "%endmacro", 0x0
+db "%macro useless_macro_1 0", 0x0
+db "%endmacro", 0x0
+db "%macro useless_macro_2 0", 0x0
+db "%endmacro", 0x0
+db "", 0x0
+db "section .text", 0x0
+db "	startProgram", 0x0
 db "", 0x0
 db "_start:", 0x0
 db "	mov rdi, FILE_NAME", 0x0
@@ -264,5 +272,5 @@ db "LINE_START db 'db ', 0x22, 0x0", 0x0
 db "LINE_END db 0x22, ', 0x0', 0x0", 0x0
 db "FILE_NAME db 'Grace_kid.s', 0x0", 0x0
 db "OPEN_ERROR_STRING db 'error: could not open/create file', 0x0", 0x0
-db "TXT_LINE_COUNT equ 0x86", 0x0
+db "TXT_LINE_COUNT equ 0x8A", 0x0
 db "txt:", 0x0
