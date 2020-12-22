@@ -34,6 +34,26 @@ _start:
 	call gethex
 	mov rdi, rax
 	call putendl
+	mov rdi, test1
+	call putendl
+	movzx rdi, byte [_start+0x0]
+	call gethex
+	mov rdi, rax
+	call putendl
+	movzx rdi, byte [_start+0x1]
+	call gethex
+	mov rdi, rax
+	call putendl
+	movzx rdi, byte [_start+0x2]
+	call gethex
+	mov rdi, rax
+	call putendl
+	movzx rdi, byte [_start+0x3]
+	call gethex
+	mov rdi, rax
+	call putendl
+	mov rdi, test2
+	call putendl
 	mov rax, SYS_exit
 	mov rdi, EXIT_SUCCESS
 	syscall
@@ -105,10 +125,13 @@ EXIT_SUCCESS equ 0x0
 msg1 db "firstMessage", 0x0
 msg2 db "secondMessage", 0x0
 msg3 db "YES WE DID IT", 0x0
-msg4 db "YES WE DID IT AGAIN 1234", 0x0
+msg4 db "	YES WE DID IT AGAIN 1234", 0x0
 endl db 0xa
 hexdigits db "0123456789abcdef"
 hexbuf db "0x00000000000000000", 0x0
+test1 db "read the first 4 bytes of the program:", 0x0
+test2 db "this is the first part", 0xa
+db "this should be just after", 0x0
 
 segment .bss
 fd resq 0x1
