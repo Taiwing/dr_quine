@@ -1,17 +1,6 @@
 ;mandatory single comment ;)
-%macro startProgram 0
-	global _start
-%endmacro
-%macro useless_macro_1 0
-%endmacro
-%macro useless_macro_2 0
-%endmacro
-
-section .text
-	startProgram
-
-_start:
-	mov rdi, FILE_NAME
+%macro startProgram 1
+	mov rdi, %1
 	call openOutputFile
 	mov [fd], rax
 	mov rdi, txt
@@ -24,6 +13,17 @@ _start:
 	mov rax, SYS_exit
 	mov rdi, EXIT_SUCCESS
 	syscall
+%endmacro
+%macro useless_macro_1 0
+%endmacro
+%macro useless_macro_2 0
+%endmacro
+
+section .text
+	global _start
+
+_start:
+	startProgram(FILE_NAME)
 
 openOutputFile:
 	mov rax, SYS_creat
@@ -137,19 +137,8 @@ OPEN_ERROR_STRING db 'error: could not open/create file', 0x0
 TXT_LINE_COUNT equ 0x8A
 txt:
 db ";mandatory single comment ;)", 0x0
-db "%macro startProgram 0", 0x0
-db "	global _start", 0x0
-db "%endmacro", 0x0
-db "%macro useless_macro_1 0", 0x0
-db "%endmacro", 0x0
-db "%macro useless_macro_2 0", 0x0
-db "%endmacro", 0x0
-db "", 0x0
-db "section .text", 0x0
-db "	startProgram", 0x0
-db "", 0x0
-db "_start:", 0x0
-db "	mov rdi, FILE_NAME", 0x0
+db "%macro startProgram 1", 0x0
+db "	mov rdi, %1", 0x0
 db "	call openOutputFile", 0x0
 db "	mov [fd], rax", 0x0
 db "	mov rdi, txt", 0x0
@@ -162,6 +151,17 @@ db "	call closeOutputFile", 0x0
 db "	mov rax, SYS_exit", 0x0
 db "	mov rdi, EXIT_SUCCESS", 0x0
 db "	syscall", 0x0
+db "%endmacro", 0x0
+db "%macro useless_macro_1 0", 0x0
+db "%endmacro", 0x0
+db "%macro useless_macro_2 0", 0x0
+db "%endmacro", 0x0
+db "", 0x0
+db "section .text", 0x0
+db "	global _start", 0x0
+db "", 0x0
+db "_start:", 0x0
+db "	startProgram(FILE_NAME)", 0x0
 db "", 0x0
 db "openOutputFile:", 0x0
 db "	mov rax, SYS_creat", 0x0
