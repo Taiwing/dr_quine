@@ -4,7 +4,10 @@ section .text
 _start:
 	cmp qword [INTEGER], 0x0
 	je end
-	cmp qword [START], 0x0
+	mov rdi, CURRENT_FILE_NAME
+	mov rsi, FIRST_FILE_NAME
+	call strcmp
+	cmp rax, 0x0
 	je getIntegerString
 	dec qword [INTEGER]
 getIntegerString:
@@ -28,8 +31,6 @@ createSourceFile:
 	mov rdi, txt
 	mov rsi, TXT_LINE_COUNT
 	call printQuotedText
-	mov rdi, START_DECL
-	call putendl
 	mov rdi, INTEGER_DECL
 	call putstr
 	mov rdi, decbuf
@@ -187,6 +188,23 @@ strcat:
 	mov rax, rbx
 	ret
 
+strcmp:
+	mov rbx, 0xffffffffffffffff
+whileEqualAndNotZero:
+	inc rbx
+	mov r10b, byte [rdi+rbx]
+	mov r11b, byte [rsi+rbx]
+	mov al, r10b
+	sub al, r11b
+	cmp r10b, 0x0
+	je returnDiff
+	cmp r11b, 0x0
+	je returnDiff
+	cmp al, 0x0
+	je whileEqualAndNotZero
+returnDiff:
+	ret
+
 segment .bss
 ptr resq 0x1
 index resq 0x1
@@ -195,12 +213,12 @@ buf resq 0x1
 len resq 0x1
 loopCnt resq 0x1
 decbuf resb 0x20
-dest resq 0x1
-src resq 0x1
 execName resb 0x30
 sourceName resb 0x30
 
 section .data
+CURRENT_FILE_NAME db __FILE__, 0x0
+FIRST_FILE_NAME db 'Sully.s', 0x0
 FILE_RADIX db 'Sully_', 0x0
 FILE_SUFFIX db '.s', 0x0
 SYS_exit equ 0x3c
@@ -213,5 +231,4 @@ ENDL db 0xa
 LINE_START db 'db ', 0x22, 0x0
 LINE_END db 0x22, ', 0x0', 0x0
 OPEN_ERROR_STRING db 'error: could not open/create file', 0x0
-START_DECL db 'START dq 0x1', 0x0
 INTEGER_DECL db 'INTEGER dq ', 0x0

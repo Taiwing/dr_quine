@@ -23,5 +23,4 @@ done < "$TARGET_CODE"
 
 echo 'db "TXT_LINE_COUNT equ 0x'$LEN'", 0x0' >> "$SELF_REP_COPY"
 echo 'db "txt:", 0x0' >> "$SELF_REP_COPY"
-echo 'START dq 0x0' >> "$SELF_REP_COPY"
 echo 'INTEGER dq 5' >> "$SELF_REP_COPY"
