@@ -2,15 +2,20 @@ section .text
 	global _start
 
 _start:
+	call main
+	mov rax, SYS_exit
+	mov rdi, EXIT_SUCCESS
+	syscall
+
+main:
+	;Yo! Im a comment in the main function ;)
 	mov rdi, txt
 	mov rsi, TXT_LINE_COUNT
 	call printRawText
 	mov rdi, txt
 	mov rsi, TXT_LINE_COUNT
 	call printQuotedText
-	mov rax, SYS_exit
-	mov rdi, EXIT_SUCCESS
-	syscall
+	ret
 
 ;proc printRawText - write Raw code to stdout
 printRawText:

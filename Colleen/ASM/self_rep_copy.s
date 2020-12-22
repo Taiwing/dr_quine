@@ -2,15 +2,20 @@ section .text
 	global _start
 
 _start:
+	call main
+	mov rax, SYS_exit
+	mov rdi, EXIT_SUCCESS
+	syscall
+
+main:
+	;Yo! Im a comment in the main function ;)
 	mov rdi, txt
 	mov rsi, TXT_LINE_COUNT
 	call printRawText
 	mov rdi, txt
 	mov rsi, TXT_LINE_COUNT
 	call printQuotedText
-	mov rax, SYS_exit
-	mov rdi, EXIT_SUCCESS
-	syscall
+	ret
 
 ;proc printRawText - write Raw code to stdout
 printRawText:
@@ -102,21 +107,26 @@ EXIT_SUCCESS equ 0x0
 endl db 0xa
 LINE_START db 'db ', 0x22, 0x0
 LINE_END db 0x22, ', 0x0', 0x0
-TXT_LINE_COUNT equ 0x6A
+TXT_LINE_COUNT equ 0x6F
 txt:
 db "section .text", 0x0
 db "	global _start", 0x0
 db "", 0x0
 db "_start:", 0x0
+db "	call main", 0x0
+db "	mov rax, SYS_exit", 0x0
+db "	mov rdi, EXIT_SUCCESS", 0x0
+db "	syscall", 0x0
+db "", 0x0
+db "main:", 0x0
+db "	;Yo! Im a comment in the main function ;)", 0x0
 db "	mov rdi, txt", 0x0
 db "	mov rsi, TXT_LINE_COUNT", 0x0
 db "	call printRawText", 0x0
 db "	mov rdi, txt", 0x0
 db "	mov rsi, TXT_LINE_COUNT", 0x0
 db "	call printQuotedText", 0x0
-db "	mov rax, SYS_exit", 0x0
-db "	mov rdi, EXIT_SUCCESS", 0x0
-db "	syscall", 0x0
+db "	ret", 0x0
 db "", 0x0
 db ";proc printRawText - write Raw code to stdout", 0x0
 db "printRawText:", 0x0
@@ -208,5 +218,5 @@ db "EXIT_SUCCESS equ 0x0", 0x0
 db "endl db 0xa", 0x0
 db "LINE_START db 'db ', 0x22, 0x0", 0x0
 db "LINE_END db 0x22, ', 0x0', 0x0", 0x0
-db "TXT_LINE_COUNT equ 0x6A", 0x0
+db "TXT_LINE_COUNT equ 0x6F", 0x0
 db "txt:", 0x0
