@@ -61,7 +61,12 @@ addArgs:
 execve:
 	mov rax, SYS_execve
 	syscall
-	jmp end ;TEMP
+	mov rdi, EXEC_ERROR_STRING
+	mov qword [fd], 0x2
+	call putendl
+	mov rax, SYS_exit
+	mov rdi, EXIT_FAILURE
+	syscall
 	ret
 
 createSourceFile:
@@ -284,4 +289,5 @@ ENDL db 0xa
 LINE_START db 'db ', 0x22, 0x0
 LINE_END db 0x22, ', 0x0', 0x0
 OPEN_ERROR_STRING db 'error: could not open/create file', 0x0
+EXEC_ERROR_STRING db 'error: could not execute script', 0x0
 INTEGER_DECL db 'INTEGER dq ', 0x0
