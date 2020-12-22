@@ -1,20 +1,7 @@
-;mandatory single comment ;)
-
 section .text
 	global _start
 
-;_start:
-;	mov rdi, FILE_NAME
-	call openOutputFile
-	mov [fd], rax
-;	mov rdi, txt
-;	mov rsi, TXT_LINE_COUNT
-	call printRawText
-;	mov rdi, txt
-;	mov rsi, TXT_LINE_COUNT
-	call printQuotedText
-	call closeOutputFile
-_start: ;TEMP
+_start:
 	cmp qword [INTEGER], 0x0
 	je end
 	cmp qword [START], 0x0
@@ -25,14 +12,30 @@ getIntegerString:
 	call getdec
 	mov rdi, rax
 	call buildFileNames
-	mov rdi, execName
-	call putendl
-	mov rdi, sourceName
-	call putendl
+	call createSourceFile
 end:
 	mov rax, SYS_exit
 	mov rdi, EXIT_SUCCESS
 	syscall
+
+createSourceFile:
+	mov rdi, sourceName
+	call openOutputFile
+	mov [fd], rax
+	mov rdi, txt
+	mov rsi, TXT_LINE_COUNT
+	call printRawText
+	mov rdi, txt
+	mov rsi, TXT_LINE_COUNT
+	call printQuotedText
+	mov rdi, START_DECL
+	call putendl
+	mov rdi, INTEGER_DECL
+	call putstr
+	mov rdi, decbuf
+	call putendl
+	call closeOutputFile
+	ret
 
 buildFileNames:
 	mov r11, rdi
@@ -210,5 +213,5 @@ ENDL db 0xa
 LINE_START db 'db ', 0x22, 0x0
 LINE_END db 0x22, ', 0x0', 0x0
 OPEN_ERROR_STRING db 'error: could not open/create file', 0x0
-START dq 0x0
-INTEGER dq 5
+START_DECL db 'START dq 0x1', 0x0
+INTEGER_DECL db 'INTEGER dq ', 0x0

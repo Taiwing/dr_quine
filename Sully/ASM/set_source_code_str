@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+IFS=''
+TARGET_CODE="$1"
+SELF_REP_COPY="self_rep_copy.s"
+
+if [ -z "$1" ]; then
+	echo "error: no argument provided"
+	exit 1
+fi
+
+cat "$TARGET_CODE" > "$SELF_REP_COPY"
+
+LEN="$(wc -l "$TARGET_CODE" | awk '{print $1}')"
+LEN="$(echo 'obase=16;'$LEN'+2' | bc)"
+
+echo "TXT_LINE_COUNT equ 0x"$LEN >> "$SELF_REP_COPY"
+echo "txt:" >> "$SELF_REP_COPY"
+
+while read; do
+	echo 'db "'$REPLY'", 0x0' >> "$SELF_REP_COPY"
+done < "$TARGET_CODE"
+
+echo 'db "TXT_LINE_COUNT equ 0x'$LEN'", 0x0' >> "$SELF_REP_COPY"
+echo 'db "txt:", 0x0' >> "$SELF_REP_COPY"
+echo 'START dq 0x0' >> "$SELF_REP_COPY"
+echo 'INTEGER dq 5' >> "$SELF_REP_COPY"
