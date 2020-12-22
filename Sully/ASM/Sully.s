@@ -16,10 +16,26 @@ getIntegerString:
 	mov rdi, rax
 	call buildFileNames
 	call createSourceFile
+	call compileSourceFile
 end:
 	mov rax, SYS_exit
 	mov rdi, EXIT_SUCCESS
 	syscall
+
+compileSourceFile:
+	xor rax, rax
+addArgs:
+	push rax
+	push FIRST_ARG
+	push SECOND_ARG
+	push THIRD_ARG
+	mov rdi, SHELL_PATH_NAME
+	mov rsi, rsp
+	xor rdx, rdx
+execve:
+	mov rax, SYS_execve
+	syscall
+	jmp end ;TEMP
 
 createSourceFile:
 	mov rdi, sourceName
@@ -225,6 +241,11 @@ SYS_exit equ 0x3c
 SYS_write equ 0x1
 SYS_creat equ 0x55
 SYS_close equ 0x3
+SYS_execve equ 0x3b
+SHELL_PATH_NAME db '/bin/sh', 0x0
+FIRST_ARG db 'echo this is a test && yasm', 0x0
+SECOND_ARG db '-c', 0x0
+THIRD_ARG db 'sh', 0x0
 EXIT_SUCCESS equ 0x0
 EXIT_FAILURE equ 0x1
 ENDL db 0xa
