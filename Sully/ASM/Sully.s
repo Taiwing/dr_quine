@@ -16,19 +16,45 @@ getIntegerString:
 	mov rdi, rax
 	call buildFileNames
 	call createSourceFile
-	call compileSourceFile
+	call buildCommand
+	call execCommand
 end:
 	mov rax, SYS_exit
 	mov rdi, EXIT_SUCCESS
 	syscall
 
-compileSourceFile:
-	xor rax, rax
+buildCommand:
+	mov rdi, command
+	mov rsi, COMPILE_COMMAND1
+	call strcpy
+	mov rsi, sourceName
+	call strcat
+	mov rsi, COMPILE_COMMAND2
+	call strcat
+	mov rsi, execName
+	call strcat
+	mov rsi, COMPILE_COMMAND3
+	call strcat
+	mov rsi, execName
+	call strcat
+	mov rsi, COMPILE_COMMAND4
+	call strcat
+	cmp qword [INTEGER], 0x0
+	je returnCommand
+	mov rsi, EXEC_COMMAND1
+	call strcat
+	mov rsi, execName
+	call strcat
+returnCommand:
+	ret
+
+execCommand:
 addArgs:
+	xor rax, rax
 	push rax
-	push FIRST_ARG
+	push command
 	push SECOND_ARG
-	push THIRD_ARG
+	push FIRST_ARG
 	mov rdi, SHELL_PATH_NAME
 	mov rsi, rsp
 	xor rdx, rdx
@@ -36,6 +62,7 @@ execve:
 	mov rax, SYS_execve
 	syscall
 	jmp end ;TEMP
+	ret
 
 createSourceFile:
 	mov rdi, sourceName
@@ -231,6 +258,7 @@ loopCnt resq 0x1
 decbuf resb 0x20
 execName resb 0x30
 sourceName resb 0x30
+command resb 0x108
 
 section .data
 CURRENT_FILE_NAME db __FILE__, 0x0
@@ -243,9 +271,13 @@ SYS_creat equ 0x55
 SYS_close equ 0x3
 SYS_execve equ 0x3b
 SHELL_PATH_NAME db '/bin/sh', 0x0
-FIRST_ARG db 'echo this is a test && yasm', 0x0
 SECOND_ARG db '-c', 0x0
-THIRD_ARG db 'sh', 0x0
+FIRST_ARG db 'sh', 0x0
+COMPILE_COMMAND1 db 'yasm -f elf64 ', 0x0
+COMPILE_COMMAND2 db ' && ld -m elf_x86_64 -s -o ', 0x0
+COMPILE_COMMAND3 db ' ', 0x0
+COMPILE_COMMAND4 db '.o', 0x0
+EXEC_COMMAND1 db ' && ./', 0x0
 EXIT_SUCCESS equ 0x0
 EXIT_FAILURE equ 0x1
 ENDL db 0xa
