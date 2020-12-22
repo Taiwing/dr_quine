@@ -15,34 +15,40 @@ section .text
 	call printQuotedText
 	call closeOutputFile
 _start: ;TEMP
-	mov rdi, 0
+	cmp qword [INTEGER], 0x0
+	je end
+	cmp qword [START], 0x0
+	je getIntegerString
+	dec qword [INTEGER]
+getIntegerString:
+	mov rdi, [INTEGER]
 	call getdec
 	mov rdi, rax
+	call buildFileNames
+	mov rdi, execName
 	call putendl
-	mov rdi, 12
-	call getdec
-	mov rdi, rax
-	call putendl
-	mov rdi, 651
-	call getdec
-	mov rdi, rax
-	call putendl
-	mov rdi, 0xfffffffffffffff
-	call getdec
-	mov rdi, rax
-	call putendl
-	mov rdi, 0xfffffffffffffffe
-	call getdec
-	mov rdi, rax
-	call putendl
-	mov rdi, 0xffffffffffffffff
-	call getdec
-	mov rdi, rax
+	mov rdi, sourceName
 	call putendl
 end:
 	mov rax, SYS_exit
 	mov rdi, EXIT_SUCCESS
 	syscall
+
+buildFileNames:
+	mov r11, rdi
+buildExecName:
+	mov rdi, execName
+	mov rsi, FILE_RADIX
+	call strcpy
+	mov rsi, r11
+	call strcat
+buildSourceName:
+	mov rdi, sourceName
+	mov rsi, execName
+	call strcpy
+	mov rsi, FILE_SUFFIX
+	call strcat
+	ret
 
 openOutputFile:
 	mov rax, SYS_creat
@@ -159,6 +165,25 @@ putendl:
 	call write
 	ret
 
+strcpy:
+	mov rax, 0xffffffffffffffff
+whileChars:
+	inc rax
+	mov r10b, byte [rsi+rax]
+	mov byte [rdi+rax], r10b
+	cmp r10b, 0x0
+	jne whileChars
+	mov rax, rdi
+	ret
+
+strcat:
+	call strlen
+	mov rbx, rdi
+	add rdi, rax
+	call strcpy
+	mov rax, rbx
+	ret
+
 segment .bss
 ptr resq 0x1
 index resq 0x1
@@ -167,8 +192,14 @@ buf resq 0x1
 len resq 0x1
 loopCnt resq 0x1
 decbuf resb 0x20
+dest resq 0x1
+src resq 0x1
+execName resb 0x30
+sourceName resb 0x30
 
 section .data
+FILE_RADIX db 'Sully_', 0x0
+FILE_SUFFIX db '.s', 0x0
 SYS_exit equ 0x3c
 SYS_write equ 0x1
 SYS_creat equ 0x55
@@ -178,6 +209,6 @@ EXIT_FAILURE equ 0x1
 ENDL db 0xa
 LINE_START db 'db ', 0x22, 0x0
 LINE_END db 0x22, ', 0x0', 0x0
-FILE_NAME_START db 'Sully_', 0x0
 OPEN_ERROR_STRING db 'error: could not open/create file', 0x0
+START dq 0x0
 INTEGER dq 5
