@@ -5,6 +5,7 @@ TARGET_CODE="$1"
 SELF_REP_COPY="${1#TEMPLATE_}"
 LQUOTE=""
 RQUOTE=""
+ECHO_OPT=""
 
 if [ -z "$1" ]; then
 	echo "error: no argument provided"
@@ -24,6 +25,14 @@ case "$1" in
 		LQUOTE='"'
 		RQUOTE='",'
 		;;
+	'TEMPLATE_Grace.c')
+		ECHO_OPT="-n"
+		echo "$ECHO_OPT" \
+			'#define TEXT char*t[]={"#define TEXT char*t[]={","0}",' \
+			> "$SELF_REP_COPY"
+		LQUOTE='"'
+		RQUOTE='",'
+		;;
 	'TEMPLATE_Colleen.s' | 'TEMPLATE_Grace.s' | 'TEMPLATE_Sully.s')
 		cat "$TARGET_CODE" > "$SELF_REP_COPY"
 		LEN="$(wc -l "$TARGET_CODE" | awk '{print $1}')"
@@ -40,7 +49,7 @@ case "$1" in
 esac
 
 while read; do
-	echo "$LQUOTE""$REPLY""$RQUOTE" >> "$SELF_REP_COPY"
+	echo $ECHO_OPT "$LQUOTE""$REPLY""$RQUOTE" >> "$SELF_REP_COPY"
 done < "$TARGET_CODE"
 
 case "$1" in
@@ -51,6 +60,10 @@ case "$1" in
 		;;
 	'TEMPLATE_Colleen.c')
 		echo '0};' >> "$SELF_REP_COPY"
+		cat "$TARGET_CODE" >> "$SELF_REP_COPY"
+		;;
+	'TEMPLATE_Grace.c')
+		echo '0}' >> "$SELF_REP_COPY"
 		cat "$TARGET_CODE" >> "$SELF_REP_COPY"
 		;;
 	'TEMPLATE_Colleen.s' | 'TEMPLATE_Grace.s' | 'TEMPLATE_Sully.s')
