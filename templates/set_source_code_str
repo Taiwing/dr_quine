@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+IFS=''
+TARGET_CODE="$1"
+SELF_REP_COPY="${1#TEMPLATE_}"
+LQUOTE=""
+RQUOTE=""
+
+if [ -z "$1" ]; then
+	echo "error: no argument provided"
+	exit 1
+fi
+
+case "$1" in
+		'TEMPLATE_ColleenV1.c')
+				echo 'const char	*g_source_code[] = {' > "$SELF_REP_COPY"
+				LQUOTE='	"'
+				RQUOTE='\n",'
+				;;
+		'TEMPLATE_Colleen.c')
+				echo 'char*t[]={' > "$SELF_REP_COPY"
+				echo '"char*t[]={",' >> "$SELF_REP_COPY"
+				echo '"0};",' >> "$SELF_REP_COPY"
+				LQUOTE='"'
+				RQUOTE='",'
+				;;
+		'TEMPLATE_Colleen.s' | 'TEMPLATE_Grace.s')
+				cat "$TARGET_CODE" > "$SELF_REP_COPY"
+				LEN="$(wc -l "$TARGET_CODE" | awk '{print $1}')"
+				LEN="$(echo 'obase=16;'$LEN'+2' | bc)"
+				echo "TXT_LINE_COUNT equ 0x"$LEN >> "$SELF_REP_COPY"
+				echo "txt:" >> "$SELF_REP_COPY"
+				LQUOTE='db "'
+				RQUOTE='", 0x0'
+				;;
+		*)
+				echo "error: invalid argument"
+				exit 1
+				;;
+esac
+
+while read; do
+	echo "$LQUOTE""$REPLY""$RQUOTE" >> "$SELF_REP_COPY"
+done < "$TARGET_CODE"
+
+case "$1" in
+		'TEMPLATE_ColleenV1.c')
+				echo '	0' >> "$SELF_REP_COPY"
+				echo '};' >> "$SELF_REP_COPY"
+				cat "$TARGET_CODE" >> "$SELF_REP_COPY"
+				;;
+		'TEMPLATE_Colleen.c')
+				echo '0};' >> "$SELF_REP_COPY"
+				cat "$TARGET_CODE" >> "$SELF_REP_COPY"
+				;;
+		'TEMPLATE_Colleen.s' | 'TEMPLATE_Grace.s')
+				echo 'db "TXT_LINE_COUNT equ 0x'$LEN'", 0x0' >> "$SELF_REP_COPY"
+				echo 'db "txt:", 0x0' >> "$SELF_REP_COPY"
+				;;
+esac
