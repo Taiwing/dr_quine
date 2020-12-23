@@ -105,7 +105,7 @@ case "$1" in
 		fi
 		;;
 	'TEMPLATE_Colleen.rs' )
-		#rm "$TARGET_CODE"
+		rm "$TARGET_CODE"
 		echo '];' >> "$SELF_REP_COPY"
 		echo >> "$SELF_REP_COPY"
 		cat "$REAL_TARGET_CODE" >> "$SELF_REP_COPY"
