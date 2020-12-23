@@ -6,6 +6,7 @@ SELF_REP_COPY="${1#TEMPLATE_}"
 LQUOTE=""
 RQUOTE=""
 ECHO_OPT=""
+READ_OPT=""
 
 if [ -z "$1" ]; then
 	echo "error: no argument provided"
@@ -50,13 +51,31 @@ case "$1" in
 		LQUOTE='db "'
 		RQUOTE='", 0x0'
 		;;
+	'TEMPLATE_Colleen.rs' )
+		LQUOTE='    "'
+		RQUOTE='",'
+		LEN="$(wc -l "$TARGET_CODE" | awk '{print $1}')"
+		LEN="$(echo $LEN'+3' | bc)"
+		echo 'static SRC: [&str; '$LEN'] = [' > "$SELF_REP_COPY"
+		echo $LQUOTE'static SRC: [&str; '$LEN'] = ['$RQUOTE >> "$SELF_REP_COPY"
+		echo $LQUOTE'];'$RQUOTE >> "$SELF_REP_COPY"
+		REAL_TARGET_CODE="$TARGET_CODE"
+		TARGET_CODE="."$TARGET_CODE".tmp"
+		echo > "$TARGET_CODE"
+		while read -re -N1 LETTER; do
+			[ "$LETTER" = "\\" ] && LETTER="\\\\\\"
+			[ "$LETTER" = "\"" ] && LETTER="\\\\""$LETTER"
+			echo -ne "$LETTER" >> "$TARGET_CODE"
+		done < "$REAL_TARGET_CODE"
+		READ_OPT="-re"
+		;;
 	*)
 		echo "error: invalid argument"
 		exit 1
 		;;
 esac
 
-while read; do
+while read $READ_OPT; do
 	echo $ECHO_OPT "$LQUOTE""$REPLY""$RQUOTE" >> "$SELF_REP_COPY"
 done < "$TARGET_CODE"
 
@@ -84,5 +103,11 @@ case "$1" in
 		if [ "$1" = 'TEMPLATE_Sully.s' ]; then
 			echo 'INTEGER dq 5' >> "$SELF_REP_COPY"
 		fi
+		;;
+	'TEMPLATE_Colleen.rs' )
+		#rm "$TARGET_CODE"
+		echo '];' >> "$SELF_REP_COPY"
+		echo >> "$SELF_REP_COPY"
+		cat "$REAL_TARGET_CODE" >> "$SELF_REP_COPY"
 		;;
 esac
