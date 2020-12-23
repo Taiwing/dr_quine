@@ -33,6 +33,14 @@ case "$1" in
 		LQUOTE='"'
 		RQUOTE='",'
 		;;
+	'TEMPLATE_Sully.c')
+		echo 'int i = 5;' > "$SELF_REP_COPY"
+		echo 'char*src[]={' >> "$SELF_REP_COPY"
+		echo '"char*src[]={",' >> "$SELF_REP_COPY"
+		echo '"0};",' >> "$SELF_REP_COPY"
+		LQUOTE='"'
+		RQUOTE='",'
+		;;
 	'TEMPLATE_Colleen.s' | 'TEMPLATE_Grace.s' | 'TEMPLATE_Sully.s')
 		cat "$TARGET_CODE" > "$SELF_REP_COPY"
 		LEN="$(wc -l "$TARGET_CODE" | awk '{print $1}')"
@@ -64,6 +72,10 @@ case "$1" in
 		;;
 	'TEMPLATE_Grace.c')
 		echo '0}' >> "$SELF_REP_COPY"
+		cat "$TARGET_CODE" >> "$SELF_REP_COPY"
+		;;
+	'TEMPLATE_Sully.c')
+		echo '0};' >> "$SELF_REP_COPY"
 		cat "$TARGET_CODE" >> "$SELF_REP_COPY"
 		;;
 	'TEMPLATE_Colleen.s' | 'TEMPLATE_Grace.s' | 'TEMPLATE_Sully.s')
