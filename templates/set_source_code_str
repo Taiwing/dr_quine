@@ -51,7 +51,7 @@ case "$1" in
 		LQUOTE='db "'
 		RQUOTE='", 0x0'
 		;;
-	'TEMPLATE_Colleen.rs' )
+	'TEMPLATE_Colleen.rs' | 'TEMPLATE_Grace.rs')
 		LQUOTE='    "'
 		RQUOTE='",'
 		LEN="$(wc -l "$TARGET_CODE" | awk '{print $1}')"
@@ -104,7 +104,7 @@ case "$1" in
 			echo 'INTEGER dq 5' >> "$SELF_REP_COPY"
 		fi
 		;;
-	'TEMPLATE_Colleen.rs' )
+	'TEMPLATE_Colleen.rs' | 'TEMPLATE_Grace.rs')
 		rm "$TARGET_CODE"
 		echo '];' >> "$SELF_REP_COPY"
 		echo >> "$SELF_REP_COPY"
