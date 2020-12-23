@@ -51,7 +51,7 @@ static SRC: [&str; 56] = [
     "    let exec_name = format!(\"./Sully_{}\", i);",
     "    write_source_file(&source_name, i)?;",
     "    Command::new(\"rustc\").arg(&source_name).status()?;",
-    "    // Command::new(&exec_name).status()?;",
+    "    Command::new(&exec_name).status()?;",
     "    Ok(())",
     "}",
     "",
@@ -106,7 +106,9 @@ fn not_a_main() -> std::io::Result<()> {
     let exec_name = format!("./Sully_{}", i);
     write_source_file(&source_name, i)?;
     Command::new("rustc").arg(&source_name).status()?;
-    // Command::new(&exec_name).status()?;
+    if i != 0 {
+        Command::new(&exec_name).status()?;
+    }
     Ok(())
 }
 
