@@ -15,7 +15,6 @@ static SRC: [&str; 56] = [
     "    }",
     "}",
     "",
-    "/* Hey! Loook at me, I am a comment! */",
     "macro_rules! print_iterator {",
     "    ($file:ident, $str_iter:ident, $lq:expr, $rq:expr) => {",
     "        for line in $str_iter {",
@@ -26,6 +25,7 @@ static SRC: [&str; 56] = [
     "",
     "use std::fs::File;",
     "use std::io::prelude::*;",
+    "use std::process::Command;",
     "",
     "fn write_source_file(source_name: &str, i: i32) -> std::io::Result<()> {",
     "    let mut file = File::create(source_name)?;",
@@ -48,10 +48,10 @@ static SRC: [&str; 56] = [
     "        return Ok(())",
     "    }",
     "    let source_name = format!(\"Sully_{}.rs\", i);",
-    "    let exec_name = format!(\"Sully_{}\", i);",
+    "    let exec_name = format!(\"./Sully_{}\", i);",
     "    write_source_file(&source_name, i)?;",
-    "    /*",
-    "    */",
+    "    Command::new(\"rustc\").arg(&source_name).status()?;",
+    "    // Command::new(&exec_name).status()?;",
     "    Ok(())",
     "}",
     "",
@@ -70,7 +70,6 @@ macro_rules! format_as_bytes {
     }
 }
 
-/* Hey! Loook at me, I am a comment! */
 macro_rules! print_iterator {
     ($file:ident, $str_iter:ident, $lq:expr, $rq:expr) => {
         for line in $str_iter {
@@ -81,6 +80,7 @@ macro_rules! print_iterator {
 
 use std::fs::File;
 use std::io::prelude::*;
+use std::process::Command;
 
 fn write_source_file(source_name: &str, i: i32) -> std::io::Result<()> {
     let mut file = File::create(source_name)?;
@@ -103,10 +103,10 @@ fn not_a_main() -> std::io::Result<()> {
         return Ok(())
     }
     let source_name = format!("Sully_{}.rs", i);
-    let exec_name = format!("Sully_{}", i);
+    let exec_name = format!("./Sully_{}", i);
     write_source_file(&source_name, i)?;
-    /*
-    */
+    Command::new("rustc").arg(&source_name).status()?;
+    // Command::new(&exec_name).status()?;
     Ok(())
 }
 
