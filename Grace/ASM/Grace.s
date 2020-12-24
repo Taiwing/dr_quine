@@ -1,6 +1,16 @@
 ;mandatory single comment ;)
-%macro startProgram 1
-	mov rdi, %1
+%define startProgram(f)	call f
+%define useless_macro_1
+%define useless_macro_2
+
+section .text
+	global _start
+
+_start:
+	startProgram(not_a_main)
+
+not_a_main:
+	mov rdi, FILE_NAME
 	call openOutputFile
 	mov [fd], rax
 	mov rdi, txt
@@ -13,17 +23,6 @@
 	mov rax, SYS_exit
 	mov rdi, EXIT_SUCCESS
 	syscall
-%endmacro
-%macro useless_macro_1 0
-%endmacro
-%macro useless_macro_2 0
-%endmacro
-
-section .text
-	global _start
-
-_start:
-	startProgram(FILE_NAME)
 
 openOutputFile:
 	mov rax, SYS_creat
@@ -134,11 +133,21 @@ LINE_START db 'db ', 0x22, 0x0
 LINE_END db 0x22, ', 0x0', 0x0
 FILE_NAME db 'Grace_kid.s', 0x0
 OPEN_ERROR_STRING db 'error: could not open/create file', 0x0
-TXT_LINE_COUNT equ 0x8A
+TXT_LINE_COUNT equ 0x89
 txt:
 db ";mandatory single comment ;)", 0x0
-db "%macro startProgram 1", 0x0
-db "	mov rdi, %1", 0x0
+db "%define startProgram(f)	call f", 0x0
+db "%define useless_macro_1", 0x0
+db "%define useless_macro_2", 0x0
+db "", 0x0
+db "section .text", 0x0
+db "	global _start", 0x0
+db "", 0x0
+db "_start:", 0x0
+db "	startProgram(not_a_main)", 0x0
+db "", 0x0
+db "not_a_main:", 0x0
+db "	mov rdi, FILE_NAME", 0x0
 db "	call openOutputFile", 0x0
 db "	mov [fd], rax", 0x0
 db "	mov rdi, txt", 0x0
@@ -151,17 +160,6 @@ db "	call closeOutputFile", 0x0
 db "	mov rax, SYS_exit", 0x0
 db "	mov rdi, EXIT_SUCCESS", 0x0
 db "	syscall", 0x0
-db "%endmacro", 0x0
-db "%macro useless_macro_1 0", 0x0
-db "%endmacro", 0x0
-db "%macro useless_macro_2 0", 0x0
-db "%endmacro", 0x0
-db "", 0x0
-db "section .text", 0x0
-db "	global _start", 0x0
-db "", 0x0
-db "_start:", 0x0
-db "	startProgram(FILE_NAME)", 0x0
 db "", 0x0
 db "openOutputFile:", 0x0
 db "	mov rax, SYS_creat", 0x0
@@ -272,5 +270,5 @@ db "LINE_START db 'db ', 0x22, 0x0", 0x0
 db "LINE_END db 0x22, ', 0x0', 0x0", 0x0
 db "FILE_NAME db 'Grace_kid.s', 0x0", 0x0
 db "OPEN_ERROR_STRING db 'error: could not open/create file', 0x0", 0x0
-db "TXT_LINE_COUNT equ 0x8A", 0x0
+db "TXT_LINE_COUNT equ 0x89", 0x0
 db "txt:", 0x0

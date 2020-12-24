@@ -1,6 +1,16 @@
 ;mandatory single comment ;)
-%macro startProgram 1
-	mov rdi, %1
+%define startProgram(f)	call f
+%define useless_macro_1
+%define useless_macro_2
+
+section .text
+	global _start
+
+_start:
+	startProgram(not_a_main)
+
+not_a_main:
+	mov rdi, FILE_NAME
 	call openOutputFile
 	mov [fd], rax
 	mov rdi, txt
@@ -13,17 +23,6 @@
 	mov rax, SYS_exit
 	mov rdi, EXIT_SUCCESS
 	syscall
-%endmacro
-%macro useless_macro_1 0
-%endmacro
-%macro useless_macro_2 0
-%endmacro
-
-section .text
-	global _start
-
-_start:
-	startProgram(FILE_NAME)
 
 openOutputFile:
 	mov rax, SYS_creat
