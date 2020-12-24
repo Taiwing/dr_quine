@@ -1,7 +1,7 @@
 ############################## COMPILE VAR #####################################
 
 CC			=	gcc
-CFLAGS		=	-g -Wall -Wextra -Werror -fsanitize=address,undefined -nostartfiles 
+CFLAGS		=	-g -Wall -Wextra -Werror -fsanitize=address,undefined
 HFLAGS		=	-include stdio.h -include stdlib.h
 NAME		=	Grace
 
