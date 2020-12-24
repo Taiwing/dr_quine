@@ -60,9 +60,15 @@ case "$1" in
 		RQUOTE='",'
 		LEN="$(wc -l "$TARGET_CODE" | awk '{print $1}')"
 		LEN="$(echo $LEN'+3' | bc)"
-		echo 'static SRC: [&str; '$LEN'] = [' >> "$SELF_REP_COPY"
-		echo $LQUOTE'static SRC: [&str; '$LEN'] = ['$RQUOTE >> "$SELF_REP_COPY"
-		echo $LQUOTE'];'$RQUOTE >> "$SELF_REP_COPY"
+		if [ "$1" = 'TEMPLATE_Grace.rs' ]; then
+			echo 'macro_rules! src_macro { () => { static SRC: [&str; '$LEN'] = [' >> "$SELF_REP_COPY"
+			echo $LQUOTE'macro_rules! src_macro { () => { static SRC: [&str; '$LEN'] = ['$RQUOTE >> "$SELF_REP_COPY"
+			echo $LQUOTE'];}}'$RQUOTE >> "$SELF_REP_COPY"
+		else
+			echo 'static SRC: [&str; '$LEN'] = [' >> "$SELF_REP_COPY"
+			echo $LQUOTE'static SRC: [&str; '$LEN'] = ['$RQUOTE >> "$SELF_REP_COPY"
+			echo $LQUOTE'];'$RQUOTE >> "$SELF_REP_COPY"
+		fi
 		REAL_TARGET_CODE="$TARGET_CODE"
 		TARGET_CODE="."$TARGET_CODE".tmp"
 		echo > "$TARGET_CODE"
@@ -110,7 +116,11 @@ case "$1" in
 		;;
 	'TEMPLATE_Colleen.rs' | 'TEMPLATE_Grace.rs' | 'TEMPLATE_Sully.rs')
 		rm "$TARGET_CODE"
-		echo '];' >> "$SELF_REP_COPY"
+		if [ "$1" = 'TEMPLATE_Grace.rs' ]; then
+			echo '];}}' >> "$SELF_REP_COPY"
+		else
+			echo '];' >> "$SELF_REP_COPY"
+		fi
 		echo >> "$SELF_REP_COPY"
 		cat "$REAL_TARGET_CODE" >> "$SELF_REP_COPY"
 		;;
