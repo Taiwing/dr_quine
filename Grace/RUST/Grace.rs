@@ -1,12 +1,6 @@
-static SRC: [&str; 38] = [
-    "static SRC: [&str; 38] = [",
+static SRC: [&str; 35] = [
+    "static SRC: [&str; 35] = [",
     "];",
-    "",
-    "macro_rules! start_program {",
-    "    () => {",
-    "        fn main() -> std::io::Result<()> { not_a_main()?; Ok(()) }",
-    "    }",
-    "}",
     "",
     "macro_rules! format_as_bytes {",
     "    ($fmt:literal, $($all_exprs:expr),*) => {",
@@ -22,28 +16,25 @@ static SRC: [&str; 38] = [
     "        }",
     "    }",
     "}",
-    "",
-    "use std::fs::File;",
-    "use std::io::prelude::*;",
-    "",
-    "fn not_a_main() -> std::io::Result<()> {",
-    "    let mut file = File::create(\"Grace_kid.rs\")?;",
-    "    let quoted_src_iter = SRC.iter().map(|s| s.escape_debug().to_string());",
-    "    let mut raw_src_iter = SRC.iter().map(|s| String::from(*s));",
-    "    file.write_all(format_as_bytes!(\"{}\\n\", raw_src_iter.next().unwrap()))?;",
-    "    print_iterator!(file, quoted_src_iter, \"    \\\"\", \"\\\",\");",
-    "    print_iterator!(file, raw_src_iter, \"\", \"\");",
-    "    Ok(())",
+    "macro_rules! start_program {",
+    "    () => {",
+    "        use std::fs::File;",
+    "        use std::io::prelude::*;",
+    "        ",
+    "        fn main() -> std::io::Result<()> {",
+    "            let mut file = File::create(\"Grace_kid.rs\")?;",
+    "            let quoted = SRC.iter().map(|s| s.escape_debug().to_string());",
+    "            let mut raw = SRC.iter().map(|s| String::from(*s));",
+    "            file.write_all(format_as_bytes!(\"{}\\n\", raw.next().unwrap()))?;",
+    "            print_iterator!(file, quoted, \"    \\\"\", \"\\\",\");",
+    "            print_iterator!(file, raw, \"\", \"\");",
+    "            Ok(())",
+    "        }",
+    "    }",
     "}",
     "",
     "start_program!();",
 ];
-
-macro_rules! start_program {
-    () => {
-        fn main() -> std::io::Result<()> { not_a_main()?; Ok(()) }
-    }
-}
 
 macro_rules! format_as_bytes {
     ($fmt:literal, $($all_exprs:expr),*) => {
@@ -59,18 +50,21 @@ macro_rules! print_iterator {
         }
     }
 }
-
-use std::fs::File;
-use std::io::prelude::*;
-
-fn not_a_main() -> std::io::Result<()> {
-    let mut file = File::create("Grace_kid.rs")?;
-    let quoted_src_iter = SRC.iter().map(|s| s.escape_debug().to_string());
-    let mut raw_src_iter = SRC.iter().map(|s| String::from(*s));
-    file.write_all(format_as_bytes!("{}\n", raw_src_iter.next().unwrap()))?;
-    print_iterator!(file, quoted_src_iter, "    \"", "\",");
-    print_iterator!(file, raw_src_iter, "", "");
-    Ok(())
+macro_rules! start_program {
+    () => {
+        use std::fs::File;
+        use std::io::prelude::*;
+        
+        fn main() -> std::io::Result<()> {
+            let mut file = File::create("Grace_kid.rs")?;
+            let quoted = SRC.iter().map(|s| s.escape_debug().to_string());
+            let mut raw = SRC.iter().map(|s| String::from(*s));
+            file.write_all(format_as_bytes!("{}\n", raw.next().unwrap()))?;
+            print_iterator!(file, quoted, "    \"", "\",");
+            print_iterator!(file, raw, "", "");
+            Ok(())
+        }
+    }
 }
 
 start_program!();
