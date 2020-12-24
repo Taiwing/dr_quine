@@ -39,6 +39,10 @@ buildCommand:
 	call strcat
 	mov rsi, COMPILE_COMMAND4
 	call strcat
+	mov rsi, execName
+	call strcat
+	mov rsi, COMPILE_COMMAND5
+	call strcat
 	cmp qword [INTEGER], 0x0
 	je returnCommand
 	mov rsi, EXEC_COMMAND1
@@ -281,7 +285,8 @@ FIRST_ARG db 'sh', 0x0
 COMPILE_COMMAND1 db 'yasm -f elf64 ', 0x0
 COMPILE_COMMAND2 db ' && ld -m elf_x86_64 -s -o ', 0x0
 COMPILE_COMMAND3 db ' ', 0x0
-COMPILE_COMMAND4 db '.o', 0x0
+COMPILE_COMMAND4 db '.o && rm -f ', 0x0
+COMPILE_COMMAND5 db '.o', 0x0
 EXEC_COMMAND1 db ' && ./', 0x0
 EXIT_SUCCESS equ 0x0
 EXIT_FAILURE equ 0x1

@@ -39,6 +39,10 @@ buildCommand:
 	call strcat
 	mov rsi, COMPILE_COMMAND4
 	call strcat
+	mov rsi, execName
+	call strcat
+	mov rsi, COMPILE_COMMAND5
+	call strcat
 	cmp qword [INTEGER], 0x0
 	je returnCommand
 	mov rsi, EXEC_COMMAND1
@@ -281,7 +285,8 @@ FIRST_ARG db 'sh', 0x0
 COMPILE_COMMAND1 db 'yasm -f elf64 ', 0x0
 COMPILE_COMMAND2 db ' && ld -m elf_x86_64 -s -o ', 0x0
 COMPILE_COMMAND3 db ' ', 0x0
-COMPILE_COMMAND4 db '.o', 0x0
+COMPILE_COMMAND4 db '.o && rm -f ', 0x0
+COMPILE_COMMAND5 db '.o', 0x0
 EXEC_COMMAND1 db ' && ./', 0x0
 EXIT_SUCCESS equ 0x0
 EXIT_FAILURE equ 0x1
@@ -291,7 +296,7 @@ LINE_END db 0x22, ', 0x0', 0x0
 OPEN_ERROR_STRING db 'error: could not open/create file', 0x0
 EXEC_ERROR_STRING db 'error: could not execute script', 0x0
 INTEGER_DECL db 'INTEGER dq ', 0x0
-TXT_LINE_COUNT equ 0x127
+TXT_LINE_COUNT equ 0x12C
 txt:
 db "section .text", 0x0
 db "	global _start", 0x0
@@ -333,6 +338,10 @@ db "	call strcat", 0x0
 db "	mov rsi, execName", 0x0
 db "	call strcat", 0x0
 db "	mov rsi, COMPILE_COMMAND4", 0x0
+db "	call strcat", 0x0
+db "	mov rsi, execName", 0x0
+db "	call strcat", 0x0
+db "	mov rsi, COMPILE_COMMAND5", 0x0
 db "	call strcat", 0x0
 db "	cmp qword [INTEGER], 0x0", 0x0
 db "	je returnCommand", 0x0
@@ -576,7 +585,8 @@ db "FIRST_ARG db 'sh', 0x0", 0x0
 db "COMPILE_COMMAND1 db 'yasm -f elf64 ', 0x0", 0x0
 db "COMPILE_COMMAND2 db ' && ld -m elf_x86_64 -s -o ', 0x0", 0x0
 db "COMPILE_COMMAND3 db ' ', 0x0", 0x0
-db "COMPILE_COMMAND4 db '.o', 0x0", 0x0
+db "COMPILE_COMMAND4 db '.o && rm -f ', 0x0", 0x0
+db "COMPILE_COMMAND5 db '.o', 0x0", 0x0
 db "EXEC_COMMAND1 db ' && ./', 0x0", 0x0
 db "EXIT_SUCCESS equ 0x0", 0x0
 db "EXIT_FAILURE equ 0x1", 0x0
@@ -586,6 +596,6 @@ db "LINE_END db 0x22, ', 0x0', 0x0", 0x0
 db "OPEN_ERROR_STRING db 'error: could not open/create file', 0x0", 0x0
 db "EXEC_ERROR_STRING db 'error: could not execute script', 0x0", 0x0
 db "INTEGER_DECL db 'INTEGER dq ', 0x0", 0x0
-db "TXT_LINE_COUNT equ 0x127", 0x0
+db "TXT_LINE_COUNT equ 0x12C", 0x0
 db "txt:", 0x0
 INTEGER dq 5
