@@ -4,7 +4,7 @@ A quine is a program that simply prints its own source code. This project
 aims at implementing quine-like programs. It is a fun little code
 challenge and also an introduction to self replicating code. They must be
 implemented in the simplest way possible without taking data from the
-outside (eg: you cannot simply read and print your own source code).
+outside (eg: you cannot simply read and print the source code).
 
 ## Setup
 
@@ -12,7 +12,7 @@ Each program of this project is implemented in three different languages.
 In C, in ASM and in Rust. They all have their own makefile at the root of
 their respective directory.
 
-#### examples
+#### examples:
 
 ```shell
 cd Colleen/C && make && ./Colleen
