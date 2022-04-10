@@ -6,6 +6,7 @@ challenge and also an introduction to self replicating code. They must be
 implemented in the simplest way possible without taking data from the
 outside (eg: you cannot simply read and print the source code).
 
+<br />
 <p align="center">
   <img src="https://github.com/Taiwing/dr_quine/blob/master/resources/infinite_mirrors.png?raw=true" alt="Sublime's custom image"/>
 </p>
