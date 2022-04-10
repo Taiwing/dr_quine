@@ -1,15 +1,14 @@
 # dr\_quine
 
-<p align="center">
-  <img src="https://github.com/Taiwing/dr_quine/blob/master/resources/infinite_mirrors.png?raw=true" alt="Sublime's custom image"/>
-</p>
-
 A quine is a program that simply prints its own source code. This project
 aims at implementing quine-like programs. It is a fun little code
 challenge and also an introduction to self replicating code. They must be
 implemented in the simplest way possible without taking data from the
 outside (eg: you cannot simply read and print the source code).
 
+<p align="center">
+  <img src="https://github.com/Taiwing/dr_quine/blob/master/resources/infinite_mirrors.png?raw=true" alt="Sublime's custom image"/>
+</p>
 
 ## Setup
 
