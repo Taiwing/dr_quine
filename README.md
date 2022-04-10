@@ -31,11 +31,11 @@ Like a quine but copies itself in an other file instead of printing.
 
 ## Sully
 
-This one is basically a loop of self replicating programs. An integer is
-declared in the source code. It is set to five. On execution Sully copies
-itself into a *Sully\_i.ext* file (where *i* is the value of the integer
-and *ext* is the type of the file). It will then proceed to compile the
-new file and execute it with an execve call. The new process will do the
-same except that it will decrease the value of the integer. This means
-that the entire operation is basically a loop.
+An integer isdeclared in the source code. It is set to five. On execution
+Sully copies itself into a *Sully\_i.ext* file (where *i* is the value of
+the integer and *ext* is the type of the file). It will then proceed to
+compile the new file and execute it with an execve call. The new process
+will do the same except that it will decrease the value of the integer.
+This means that the entire operation is basically a loop of self
+replicating programs.
 
