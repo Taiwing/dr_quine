@@ -53,7 +53,7 @@ with *TEMPLATE*).
 When modifying a template the *set_source_code_str* script can be
 executed to add the data part to the file and create the quine.
 
-####example:
+#### example:
 
 ```shell
 cd templates/
