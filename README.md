@@ -1,4 +1,4 @@
-# DR QUINE
+# dr\_quine
 
 A quine is a program that simply prints its own source code. This project
 aims at implementing quine-like programs. It is a fun little code
