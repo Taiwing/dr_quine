@@ -48,5 +48,15 @@ solution found to the quine problem is a simple array of strings that
 stores the entire source code, it needs to be copied each time and
 "stringified" which is very boring to do manually. So each quine
 program is written without the data part (the file names are prefixed
-with *TEMPLATE*). Once a template is modified `./set_source_code_str`
-can be executed to add the data part to the file.
+with *TEMPLATE*).
+
+When modifying a template the *set_source_code_str* script can be
+executed to add the data part to the file and create the quine.
+
+####example:
+
+```shell
+cd templates/
+vim TEMPLATE_Colleen.c # really useful modifications
+./set_source_code_str TEMPLATE_Colleen.c # creates a new Colleen.c
+```
