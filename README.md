@@ -41,3 +41,12 @@ will do the same except that it will decrease the value of the integer.
 This means that the entire operation is basically a loop of self
 replicating programs.
 
+## Development
+
+At the root of the project there is a *templates/* directory. Since the
+solution found to the quine problem is a simple array of strings that
+stores the entire source code, it needs to be copied each time and
+"stringified" which is very boring to do manually. So each quine
+program is written without the data part (the file names are prefixed
+with *TEMPLATE*). Once a template is modified `./set_source_code_str`
+can be executed to add the data part to the file.
