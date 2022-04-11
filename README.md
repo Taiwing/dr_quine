@@ -8,10 +8,7 @@ outside (eg: you cannot simply read and print the source code).
 
 <br />
 <p align="center">
-  <img
-    src="../blob/master/resources/infinite_mirrors.png?raw=true"
-    alt="Sublime's custom image"
-  />
+  <img src="https://github.com/Taiwing/dr_quine/blob/master/resources/infinite_mirrors.png?raw=true" alt="infinite mirrors"/>
 </p>
 
 ## Setup
