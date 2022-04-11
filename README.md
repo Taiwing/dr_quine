@@ -8,7 +8,10 @@ outside (eg: you cannot simply read and print the source code).
 
 <br />
 <p align="center">
-  <img src="https://github.com/Taiwing/dr_quine/blob/master/resources/infinite_mirrors.png?raw=true" alt="Sublime's custom image"/>
+  <img
+    src="../blob/master/resources/infinite_mirrors.png?raw=true"
+    alt="Sublime's custom image"
+  />
 </p>
 
 ## Setup
@@ -17,12 +20,15 @@ Each program of this project is implemented in three different languages.
 In C, in ASM and in Rust. They all have their own makefile at the root of
 their respective directory.
 
-#### examples:
-
 ```shell
-cd Colleen/C && make && ./Colleen
-cd Grace/ASM && make && ./Grace
-cd Sully/RUST && make && ./Sully
+# clone it
+git clone https://github.com/Taiwing/dr_quine
+# make and run Colleen's C version
+cd dr_quine/Colleen/C && make && ./Colleen
+# make and run Grace's ASM version
+cd ../../Grace/ASM && make && ./Grace
+# make and run Sully's Rust version
+cd ../../Sully/RUST && make && ./Sully
 ```
 
 The C, ASM and Rust projects depend respectively on gcc, yasm and rustc
@@ -38,7 +44,7 @@ Like a quine but copies itself in an other file instead of printing.
 
 ## Sully
 
-An integer isdeclared in the source code. It is set to five. On execution
+An integer is declared in the source code. It is set to five. On execution
 Sully copies itself into a *Sully\_i.ext* file (where *i* is the value of
 the integer and *ext* is the type of the file). It will then proceed to
 compile the new file and execute it with an execve call. The new process
