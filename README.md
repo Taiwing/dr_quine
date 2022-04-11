@@ -31,9 +31,30 @@ cd ../../Sully/RUST && make && ./Sully
 The C, ASM and Rust projects depend respectively on gcc, yasm and rustc
 to compile and execute properly.
 
+> To make the C version as short as possible some returns and types have been
+> omitted in the code. It prints a lot of warnings but still compiles with gcc
+> 9.4.0
+
 ## Colleen
 
 This is a simple quine. The three versions will print their source code.
+
+Running `./Colleen` in Colleen/C/ will print:
+
+```C
+char*t[]={
+"char*t[]={",
+"0};",
+"#define W putchar",
+"q(int*s){W(34);printf(s,0);W(34);W(44);W(10);};",
+"p(int**z,int(*f)()){while(*z)f(*z++);}",
+"main(){puts(*t);p(t,q);p(t+1,puts);}",
+0};
+#define W putchar
+q(int*s){W(34);printf(s,0);W(34);W(44);W(10);};
+p(int**z,int(*f)()){while(*z)f(*z++);}
+main(){puts(*t);p(t,q);p(t+1,puts);}
+```
 
 ## Grace
 
