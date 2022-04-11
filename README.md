@@ -65,6 +65,10 @@ executed to add the data part to the file and create the quine.
 
 ```shell
 cd templates/
-vim TEMPLATE_Colleen.c # really useful modifications
-./set_source_code_str TEMPLATE_Colleen.c # creates a new Colleen.c
+# make some really useful modifications
+vim TEMPLATE_Colleen.c
+# create a new Colleen.c
+./set_source_code_str TEMPLATE_Colleen.c
+# move it to its directory
+mv Colleen.c ../Colleen/C/
 ```
