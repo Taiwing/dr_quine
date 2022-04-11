@@ -60,6 +60,16 @@ main(){puts(*t);p(t,q);p(t+1,puts);}
 
 Like a quine but copies itself in an other file instead of printing.
 
+#### example:
+
+```shell
+cd Grace/RUST/
+# make and run Grace
+make && ./Grace
+# check that the files are the same (returns 0 and prints nothing)
+diff Grace.rs Grace_kid.rs
+```
+
 ## Sully
 
 An integer is declared in the source code. It is set to five. On execution
@@ -69,6 +79,16 @@ compile the new file and execute it with an execve call. The new process
 will do the same except that it will decrease the value of the integer.
 This means that the entire operation is basically a loop of self
 replicating programs.
+
+#### example:
+
+```shell
+cd Sully/ASM/
+# make and run Sully
+make && ./Sully
+# only returns the integer line
+diff Sully.s Sully_0.s
+```
 
 ## Development
 
