@@ -1,7 +1,6 @@
 ############################## COMPILE VAR #####################################
 
 CC			=	gcc
-CFLAGS		=	-g -Wall -Wextra -Werror -fsanitize=address,undefined
 HFLAGS		=	-include stdio.h
 NAME		=	Colleen
 
@@ -14,7 +13,7 @@ SRC			=	Colleen.c
 all: $(NAME)
 
 $(NAME): $(SRC)
-	$(CC) $(CFLAGS) $(HFLAGS) -o $@ $<
+	$(CC) $(HFLAGS) -o $@ $<
 
 ############################## CLEANUP #########################################
 
