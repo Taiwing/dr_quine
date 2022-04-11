@@ -2,6 +2,7 @@
 
 CC			=	gcc
 CFLAGS		=	-g -Wall -Wextra -Werror -fsanitize=address,undefined
+HFLAGS		=	-include stdio.h
 NAME		=	Colleen
 
 ############################## SOURCES #########################################
